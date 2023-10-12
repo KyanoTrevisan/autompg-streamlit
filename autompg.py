@@ -95,8 +95,7 @@ def visualize_data(option):
 
 
 # Adding visualization dropdown to Streamlit
-visualization_options = ["Displacement vs. MPG", "Horsepower vs. MPG", "MPG across Different Cylinders", 
-                         "Weight vs. MPG", "Average MPG by Model Year", "Average MPG by Origin"]
+visualization_options = ["Displacement vs. MPG", "Horsepower vs. MPG", "Weight vs. MPG", "Average MPG by Model Year", "Average MPG by Origin"]
 selected_visualization = st.selectbox("Choose a Visualization", visualization_options)
 visualize_data(selected_visualization)
 
