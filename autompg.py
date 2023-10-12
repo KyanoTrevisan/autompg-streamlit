@@ -67,8 +67,9 @@ def visualize_data(option):
 
     elif option == "MPG across Different Cylinders":
         fig, ax = plt.subplots()
-        ax.boxplot([y[X['cylinders'] == i].values for i in X['cylinders'].unique()])
-        ax.set_xticklabels(X['cylinders'].unique())
+        data_to_plot = [y[X['cylinders'] == i].values for i in sorted(X['cylinders'].unique())]
+        ax.boxplot(data_to_plot)
+        ax.set_xticklabels(sorted(X['cylinders'].unique()))
         ax.set_title('MPG across Different Cylinders')
         ax.set_xlabel('Cylinders')
         ax.set_ylabel('MPG')
@@ -84,7 +85,8 @@ def visualize_data(option):
 
     elif option == "Average MPG by Model Year":
         fig, ax = plt.subplots()
-        avg_mpg = y.groupby(X['model_year']).mean()
+        combined = pd.concat([X, y], axis=1)
+        avg_mpg = combined.groupby('model_year')['mpg'].mean()
         ax.bar(avg_mpg.index, avg_mpg.values, color='purple')
         ax.set_title('Average MPG by Model Year')
         ax.set_xlabel('Model Year')
@@ -93,12 +95,14 @@ def visualize_data(option):
 
     elif option == "Average MPG by Origin":
         fig, ax = plt.subplots()
-        avg_mpg = y.groupby(X['origin']).mean()
+        combined = pd.concat([X, y], axis=1)
+        avg_mpg = combined.groupby('origin')['mpg'].mean()
         ax.bar(avg_mpg.index, avg_mpg.values, color='orange')
         ax.set_title('Average MPG by Origin')
         ax.set_xlabel('Origin')
         ax.set_ylabel('Average MPG')
         st.pyplot(fig)
+
 
 # Adding visualization dropdown to Streamlit
 visualization_options = ["Displacement vs. MPG", "Horsepower vs. MPG", "MPG across Different Cylinders", 
@@ -123,7 +127,7 @@ elif model_option == "SVR":
 else:
     prediction = ridge_model.predict([list(input_features.values())])[0]
 
-st.write(f"Predicted MPG for {model_option}: {prediction}")
+st.write(f"### Predicted MPG for {model_option}: {prediction}")
 
 # Displaying RMSE for each model
 st.write("### Model Performance (RMSE)")
