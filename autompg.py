@@ -65,16 +65,6 @@ def visualize_data(option):
         ax.set_ylabel('MPG')
         st.pyplot(fig)
 
-    elif option == "MPG across Different Cylinders":
-        fig, ax = plt.subplots()
-        data_to_plot = [y[X['cylinders'] == i].values for i in sorted(X['cylinders'].unique())]
-        ax.boxplot(data_to_plot)
-        ax.set_xticklabels(sorted(X['cylinders'].unique()))
-        ax.set_title('MPG across Different Cylinders')
-        ax.set_xlabel('Cylinders')
-        ax.set_ylabel('MPG')
-        st.pyplot(fig)
-
     elif option == "Weight vs. MPG":
         fig, ax = plt.subplots()
         ax.scatter(X['weight'], y, color='green')
@@ -128,9 +118,3 @@ else:
     prediction = ridge_model.predict([list(input_features.values())])[0]
 
 st.write(f"### Predicted MPG for {model_option}: {prediction}")
-
-# Displaying RMSE for each model
-st.write("### Model Performance (RMSE)")
-st.write(f"Linear Regression: {lr_rmse}")
-st.write(f"SVR: {svr_rmse}")
-st.write(f"Ridge Regression: {ridge_rmse}")
