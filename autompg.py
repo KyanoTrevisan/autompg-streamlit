@@ -18,10 +18,7 @@ y = auto_mpg.data.targets
 st.title("Auto MPG Prediction App")
 st.write("Predict Miles per Gallon (MPG) based on car features.")
 
-# Displaying metadata and dataset overview
-st.write("### Dataset Metadata")
-st.write(auto_mpg.metadata)
-
+# Dataset overview
 st.write("### Dataset Variables")
 st.write(auto_mpg.variables)
 
@@ -50,15 +47,64 @@ ridge_model.fit(X_train, y_train)
 ridge_predictions = ridge_model.predict(X_test)
 ridge_rmse = np.sqrt(mean_squared_error(y_test, ridge_predictions))
 
-# Visualizing the distribution of MPG
-st.write("### Distribution of MPG")
-fig, ax = plt.subplots(figsize=(10, 6))
-ax.hist(y, bins=20, color='skyblue', edgecolor='black')
-ax.set_title('Distribution of MPG')
-ax.set_xlabel('MPG')
-ax.set_ylabel('Number of Cars')
-ax.grid(True)
-st.pyplot(fig)
+# Visualization Function
+def visualize_data(option):
+    if option == "Displacement vs. MPG":
+        fig, ax = plt.subplots()
+        ax.scatter(X['displacement'], y, color='blue')
+        ax.set_title('Displacement vs. MPG')
+        ax.set_xlabel('Displacement')
+        ax.set_ylabel('MPG')
+        st.pyplot(fig)
+        
+    elif option == "Horsepower vs. MPG":
+        fig, ax = plt.subplots()
+        ax.scatter(X['horsepower'], y, color='red')
+        ax.set_title('Horsepower vs. MPG')
+        ax.set_xlabel('Horsepower')
+        ax.set_ylabel('MPG')
+        st.pyplot(fig)
+
+    elif option == "MPG across Different Cylinders":
+        fig, ax = plt.subplots()
+        ax.boxplot([y[X['cylinders'] == i].values for i in X['cylinders'].unique()])
+        ax.set_xticklabels(X['cylinders'].unique())
+        ax.set_title('MPG across Different Cylinders')
+        ax.set_xlabel('Cylinders')
+        ax.set_ylabel('MPG')
+        st.pyplot(fig)
+
+    elif option == "Weight vs. MPG":
+        fig, ax = plt.subplots()
+        ax.scatter(X['weight'], y, color='green')
+        ax.set_title('Weight vs. MPG')
+        ax.set_xlabel('Weight')
+        ax.set_ylabel('MPG')
+        st.pyplot(fig)
+
+    elif option == "Average MPG by Model Year":
+        fig, ax = plt.subplots()
+        avg_mpg = y.groupby(X['model_year']).mean()
+        ax.bar(avg_mpg.index, avg_mpg.values, color='purple')
+        ax.set_title('Average MPG by Model Year')
+        ax.set_xlabel('Model Year')
+        ax.set_ylabel('Average MPG')
+        st.pyplot(fig)
+
+    elif option == "Average MPG by Origin":
+        fig, ax = plt.subplots()
+        avg_mpg = y.groupby(X['origin']).mean()
+        ax.bar(avg_mpg.index, avg_mpg.values, color='orange')
+        ax.set_title('Average MPG by Origin')
+        ax.set_xlabel('Origin')
+        ax.set_ylabel('Average MPG')
+        st.pyplot(fig)
+
+# Adding visualization dropdown to Streamlit
+visualization_options = ["Displacement vs. MPG", "Horsepower vs. MPG", "MPG across Different Cylinders", 
+                         "Weight vs. MPG", "Average MPG by Model Year", "Average MPG by Origin"]
+selected_visualization = st.selectbox("Choose a Visualization", visualization_options)
+visualize_data(selected_visualization)
 
 # User input for prediction
 st.write("### Predict MPG")
