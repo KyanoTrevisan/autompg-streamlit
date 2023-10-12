@@ -2,4 +2,4 @@ ucimlrepo
 numpy  
 pandas 
 matplotlib
-sklearn
+scikit-learn
