@@ -1,6 +1,7 @@
 # Import necessary libraries for the Streamlit app
 import streamlit as st
 from ucimlrepo import fetch_ucirepo
+import ssl
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -8,6 +9,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.svm import SVR
 from sklearn.metrics import mean_squared_error
+
+ssl._create_default_https_context = ssl._create_unverified_context
+covertype = fetch_ucirepo(id=31)
 
 # Fetch the dataset
 auto_mpg = fetch_ucirepo(id=9) 
